@@ -115,5 +115,3 @@ android.libraryVariants.all { variant ->
         //exclude '**/R.java'
     }
 }
-
-assemble.dependsOn 'checkstyle'
