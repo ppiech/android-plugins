@@ -1,1 +1,1 @@
-include ':service_relay',':android'
+include ':android', ':service_relay', ':rxjava'

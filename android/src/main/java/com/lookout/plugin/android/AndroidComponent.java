@@ -3,9 +3,6 @@ package com.lookout.plugin.android;
 import android.app.Application;
 
 import com.lookout.plugin.PluginRegistry;
-import com.lookout.plugin.android.concurrency.Background;
-import com.lookout.plugin.android.concurrency.MainLooper;
-import rx.Scheduler;
 
 /**
  * Base interface for Dagger components in the ApplicationScope.
@@ -45,6 +42,4 @@ import rx.Scheduler;
 public interface AndroidComponent {
     Application application();
     PluginRegistry pluginRegistry();
-    @MainLooper Scheduler mainLooper();
-    @Background Scheduler backgroundLooper();
 }

@@ -7,9 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 import dagger.Module;
 import dagger.Provides;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 @Module
 public class ConcurrencyModule {
@@ -23,23 +20,5 @@ public class ConcurrencyModule {
     @SingleThread
     Executor providesSingleThreadPoolExecutor() {
         return new ThreadPoolExecutor(0, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
-    }
-
-    /**
-     * Creates an rxjava Scheduelr that runs tasks in Android UI thread.
-     */
-    @Provides
-    @MainLooper
-    Scheduler providesMainLooperScheduler() {
-        return AndroidSchedulers.mainThread();
-    }
-
-    /**
-     * Creates an rxjava Scheduelr that runs tasks a background thread pool.
-     */
-    @Provides
-    @Background
-    Scheduler providesBackgroundScheduler() {
-        return Schedulers.io();
     }
 }

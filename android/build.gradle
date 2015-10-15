@@ -16,10 +16,6 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-
-    dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
-    }
 }
 
 // This is the repository for the build artifacts
@@ -34,16 +30,15 @@ repositories {
     }
 }
 
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 'Google Inc.:Google APIs:22'
-    buildToolsVersion '22.0.1'
+    compileSdkVersion 'Google Inc.:Google APIs:23'
+    buildToolsVersion '23.0.1'
 
     defaultConfig {
         minSdkVersion 10
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -54,35 +49,18 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    packagingOptions {
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'NOTICE.txt'
-        exclude 'NOTICE'
-        exclude 'LICENSE.txt'
-        exclude 'LICENSE'
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-
     compile 'com.google.dagger:dagger:2.0'
     apt "com.google.dagger:dagger-compiler:2.0"
     provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'org.slf4j:slf4j-api:1.7.7'
-
-    compile 'io.reactivex:rxandroid:0.24.+'
-
-    compile('com.lookout.googleplayserviceslib:google-play-services_lib:4.3.+')
 
     testCompile 'junit:junit:4.12'
-    testCompile('org.robolectric:robolectric:3.0-rc2') {
+    testCompile('org.robolectric:robolectric:3.0') {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
@@ -90,28 +68,4 @@ dependencies {
         exclude group: 'junit', module: 'junit'
     }
     testCompile 'org.mockito:mockito-core:1.9.5'
-    testCompile('org.skyscreamer:jsonassert:1.2.0') {
-        transitive = false
-    }
-}
-
-android.libraryVariants.all { variant ->
-
-    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-        dependsOn "assemble${variant.name.capitalize()}"
-        title = "Documentation for Android $android.defaultConfig.versionName b$android.defaultConfig.versionCode"
-        destinationDir = new File("${project.getBuildDir()}/doc/compiled/", variant.baseName)
-        source = variant.javaCompile.source
-
-        ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
-        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
-
-        description "Generates Javadoc for $variant.name."
-
-        options.memberLevel = org.gradle.external.javadoc.JavadocMemberLevel.PRIVATE
-        options.links("http://docs.oracle.com/javase/7/docs/api/");
-        options.links("http://developer.android.com/reference/reference/");
-        //exclude '**/BuildConfig.java'
-        //exclude '**/R.java'
-    }
 }

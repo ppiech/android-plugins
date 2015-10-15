@@ -60,7 +60,7 @@ public abstract class IntentServiceRelayDelegate implements ServiceRelayDelegate
      * NOTE: May override to return Service.REDELIER_INTENT
      */
     @Override
-    public int onServiceStartCommand(final Intent intent, int flags, int startId) {
+    public int onServiceStartCommand(final Intent intent, int flags, final int startId) {
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
