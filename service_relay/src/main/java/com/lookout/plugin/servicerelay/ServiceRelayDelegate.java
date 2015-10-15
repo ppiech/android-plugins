@@ -2,10 +2,34 @@ package com.lookout.plugin.servicerelay;
 
 import android.content.Intent;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import javax.inject.Qualifier;
+
+import dagger.Provides;
+
 /**
- * Listener called with command requests and life-cycle events of the underlying android service.
+ * Light-weight replacement for an Android service.  ServiceRelay delegates implement the
+ * <code>ServiceRelayDelegate</code> interface, which mirrors Android's {@link android.app.Service}
+ * API.  ServiceRelay uses a single Android service and delegates service calls to the delegates
+ * injected through dagger.  <code>ServiceRelayDelegate</code> implementations must manage their own
+ * background threads and must honor the API contract by calling  {@link Control#stopSelfResult(int)}
+ * upon completion of every task.
+ * <p>
+ * To provide ServiceRelayDelegate extensions, clients should use the{@link Provides.Type#SET}
+ * dagger injection, such as:
+ * <pre>
+ *    @Provides(type = Provides.Type.SET)
+ *    @Singleton
+ *    ServiceRelayDelegate providesServiceExtension(MyServiceDelegateImpl service) {
+ *        return service;
+ *    }
+ * </pre>
+ * </p>
  */
-public interface ServiceRelayExtension {
+public interface ServiceRelayDelegate {
 
     /**
      * Returns the intent actions that this extension handles.
@@ -22,7 +46,7 @@ public interface ServiceRelayExtension {
          * Requests that the service be stopped.  The underlying service will be stopped only
          * if all relay listeners have completed their commands.  If called after onServiceDestroy()
          * is called, the request will be ignored.
-         * @param startId ID that was used in call to {@link ServiceRelayExtension#onServiceStartCommand}.
+         * @param startId ID that was used in call to {@link ServiceRelayDelegate#onServiceStartCommand}.
          * @return true if the underlying android service will be stopped
          * @see android.app.Service#stopSelfResult(int)
          */

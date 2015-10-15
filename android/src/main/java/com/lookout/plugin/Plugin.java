@@ -17,20 +17,4 @@ public class Plugin {
      */
     public void onApplicationCreate() {
     }
-
-    /**
-     * Returns the extensions provided by this Plugin for the given extension point.  It may be called
-     * before this plugin's {@link #onApplicationCreate()} is called (in the case where another plugin's
-     * {@code onAppicationCreate()} requests its extensions.
-     *
-     * @see PluginRegistry#getExtensions(Class)
-     * @param extensionPoint Should be examined by implementation before returning its extensions.
-     * @param <T> Capture the extension point type from the supplied class parameter to avoid
-     *           casting by the client.
-
-     * @return Extensions supplied by this class, or null if no extensions are provided by this plugin.
-     */
-    public <T> T[] provideExtensions(Class<T> extensionPoint) {
-        return null;
-    }
 }

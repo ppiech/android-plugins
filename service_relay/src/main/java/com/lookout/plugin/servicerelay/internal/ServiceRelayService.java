@@ -6,14 +6,14 @@ import android.os.IBinder;
 
 import com.lookout.plugin.android.Provider;
 import com.lookout.plugin.servicerelay.ServiceRelayComponent;
-import com.lookout.plugin.servicerelay.ServiceRelayExtension;
+import com.lookout.plugin.servicerelay.ServiceRelayDelegate;
 
 import javax.inject.Inject;
 
-public class ServiceRelayService extends Service implements ServiceRelayExtension.Control {
+public class ServiceRelayService extends Service implements ServiceRelayDelegate.Control {
 
     @Inject
-    ServiceRelayImpl mServiceShare;
+    ServiceRelay mServiceShare;
 
     @Override
     public void onCreate() {

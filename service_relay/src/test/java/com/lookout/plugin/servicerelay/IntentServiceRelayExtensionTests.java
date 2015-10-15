@@ -3,7 +3,7 @@ package com.lookout.plugin.servicerelay;
 import android.content.Intent;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.lookout.servicerelay.IntentServiceRelayExtension;
+import com.lookout.servicerelay.IntentServiceRelayDelegate;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +34,8 @@ public class IntentServiceRelayExtensionTests {
     private static int FLAGS = 456;
     private static int START_ID = 123;
 
-    public static class TestIntentServiceExtension extends IntentServiceRelayExtension {
-        public TestIntentServiceExtension(ExecutorService executor) {
+    public static class TestIntentServiceDelegate extends IntentServiceRelayDelegate {
+        public TestIntentServiceDelegate(ExecutorService executor) {
             super(executor);
         }
 
@@ -53,15 +53,15 @@ public class IntentServiceRelayExtensionTests {
     private ExecutorService mExecutor;
 
     @Mock
-    private ServiceRelayExtension.Control mControl;
+    private ServiceRelayDelegate.Control mControl;
 
-    private TestIntentServiceExtension mIntentServiceExtension;
+    private TestIntentServiceDelegate mIntentServiceExtension;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mIntentServiceExtension = spy(new TestIntentServiceExtension(mExecutor));
+        mIntentServiceExtension = spy(new TestIntentServiceDelegate(mExecutor));
 
         // Initialize service extension, as required by the extension API.
         mIntentServiceExtension.onServiceCreate(mControl);

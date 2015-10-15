@@ -23,15 +23,4 @@ public class BuildConfigModule {
         return mBuildConfigWrapper;
     }
 
-    public static class BuildConfigWrapper {
-        private final boolean mDebug;
-
-        public BuildConfigWrapper(boolean debug) {
-            mDebug = debug;
-        }
-
-        public boolean isDebug() {
-            return mDebug;
-        }
-    }
 }

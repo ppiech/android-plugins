@@ -4,20 +4,20 @@ import android.app.Service;
 import android.content.Intent;
 
 import com.lookout.plugin.android.concurrency.SingleThread;
-import com.lookout.plugin.servicerelay.ServiceRelayExtension;
+import com.lookout.plugin.servicerelay.ServiceRelayDelegate;
 
 import net.jcip.annotations.GuardedBy;
 
 import java.util.concurrent.Executor;
 
 /**
- * This service relay extension provides an implementation similar to the
- * {@link android.app.IntentService}.  I.e. when an intent is received by the extension, it starts
+ * This service relay delegate provides an implementation similar to the
+ * {@link android.app.IntentService}.  When an intent is received by the extension, it starts
  * a background thread which calls the abstract method {link #onServiceHandleIntent}, to handle the
  * intent.  Once the onServiceHandleIntent method returns, the extension signals the service relay
  * to stop the service.
  */
-public abstract class IntentServiceRelayExtension implements ServiceRelayExtension {
+public abstract class IntentServiceRelayDelegate implements ServiceRelayDelegate {
 
     private final Executor mExecutor;
 
@@ -29,7 +29,7 @@ public abstract class IntentServiceRelayExtension implements ServiceRelayExtensi
      * {@link SingleThread} for injecting the default executor.
      * @param executor Executor to use with this intent service.
      */
-    public IntentServiceRelayExtension(Executor executor) {
+    public IntentServiceRelayDelegate(Executor executor) {
         mExecutor = executor;
     }
 

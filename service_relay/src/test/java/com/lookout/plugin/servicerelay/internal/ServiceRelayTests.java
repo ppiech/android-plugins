@@ -3,8 +3,7 @@ package com.lookout.plugin.servicerelay.internal;
 import android.content.Intent;
 import android.test.suitebuilder.annotation.SmallTest;
 
-import com.lookout.plugin.PluginRegistry;
-import com.lookout.plugin.servicerelay.ServiceRelayExtension;
+import com.lookout.plugin.servicerelay.ServiceRelayDelegate;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,8 +13,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -29,7 +32,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = com.lookout.plugin.servicerelay.BuildConfig.class, emulateSdk = 16)
-public class ServiceRelaySharedTests {
+public class ServiceRelayTests {
 
     private static String ACTION_EXTENSION1_ACTION1 = "extensions1 action1";
     private static String ACTION_EXTENSION1_ACTION2 = "extensions1 action2";
@@ -43,18 +46,15 @@ public class ServiceRelaySharedTests {
     private static int FLAGS = 456;
 
     @Mock
-    private ServiceRelayExtension.Control mService;
+    private ServiceRelayDelegate.Control mService;
 
     @Mock
-    private PluginRegistry mPluginRegistry;
+    private ServiceRelayDelegate mExtension1;
 
     @Mock
-    private ServiceRelayExtension mExtension1;
+    private ServiceRelayDelegate mExtension2;
 
-    @Mock
-    private ServiceRelayExtension mExtension2;
-
-    private ServiceRelayImpl mServiceRelayShared;
+    private ServiceRelay mServiceRelayShared;
 
     @Before
     public void setUp() throws Exception {
@@ -62,13 +62,14 @@ public class ServiceRelaySharedTests {
 
         // setup: two extensions are returned by the plugin registry
         when(mExtension1.getActions()).thenReturn(
-                new String[] { ACTION_EXTENSION1_ACTION1, ACTION_EXTENSION1_ACTION2 });
+                new String[]{ACTION_EXTENSION1_ACTION1, ACTION_EXTENSION1_ACTION2});
         when(mExtension2.getActions()).thenReturn(
                 new String[] { ACTION_EXTENSION2_ACTION1, ACTION_EXTENSION2_ACTION2 });
-        when(mPluginRegistry.getExtensions(ServiceRelayExtension.class)).thenReturn(
-                new ServiceRelayExtension[] {mExtension1, mExtension2});
 
-        mServiceRelayShared = new ServiceRelayImpl(RuntimeEnvironment.application, mPluginRegistry);
+        Set<ServiceRelayDelegate> extensions = Collections.unmodifiableSet(
+                new HashSet<>(Arrays.asList(mExtension1, mExtension2)));
+
+        mServiceRelayShared = new ServiceRelay(extensions);
     }
 
     @After
@@ -82,8 +83,8 @@ public class ServiceRelaySharedTests {
         mServiceRelayShared.onServiceCreate(mService);
 
         // then: both extensions care called with onServiceCreate with the control instance
-        verify(mExtension1, times(1)).onServiceCreate(any(ServiceRelayExtension.Control.class));
-        verify(mExtension2, times(1)).onServiceCreate(any(ServiceRelayExtension.Control.class));
+        verify(mExtension1, times(1)).onServiceCreate(any(ServiceRelayDelegate.Control.class));
+        verify(mExtension2, times(1)).onServiceCreate(any(ServiceRelayDelegate.Control.class));
     }
 
     @SmallTest
@@ -161,8 +162,8 @@ public class ServiceRelaySharedTests {
         }
     }
 
-    private ServiceRelayExtension.Control captureOnServiceCreateControl(ServiceRelayExtension extensionMock) {
-        ArgumentCaptor<ServiceRelayExtension.Control> controlCaptor = ArgumentCaptor.forClass(ServiceRelayExtension.Control.class);
+    private ServiceRelayDelegate.Control captureOnServiceCreateControl(ServiceRelayDelegate extensionMock) {
+        ArgumentCaptor<ServiceRelayDelegate.Control> controlCaptor = ArgumentCaptor.forClass(ServiceRelayDelegate.Control.class);
         verify(extensionMock).onServiceCreate(controlCaptor.capture());
         return controlCaptor.getValue();
     }
