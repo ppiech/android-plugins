@@ -9,26 +9,21 @@ configurations {
 }
 
 buildscript {
-    project.ext.set("context_url", 'https://artifactory.flexilis.net/artifactory')
-
     repositories {
+        jcenter()
+
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
 }
 
-// This is the repository for the build artifacts
 repositories {
+    jcenter()
+
     maven {
-        if (project.getProperties().get('localPublishEnabled', false)) {
-            mavenLocal()
-        }
-        // if you need to pull in a snapshot, change to
-        // libs-all for DEBUG ONLY
-        url "${project.context_url}/libs-release"
-    }
-}
+        url "https://plugins.gradle.org/m2/"
+    }}
 
 apply plugin: 'com.neenbedankt.android-apt'
 
