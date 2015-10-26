@@ -24,12 +24,6 @@ repositories {
 }
 
 subprojects {
-    // Change to libs-all to pull in snapshots
-    // (during development only)
-    def repo = 'libs-release'
-
-    def useLocal = project.properties.get('localPublishEnabled', false)
-
     buildscript {
         repositories {
             mavenCentral()
