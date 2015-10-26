@@ -4,7 +4,7 @@ By definition, plugin architecture is design pattern that allows the main functi
 There are many plugin architecture frameworks in Java, such as Spring and OSGi,  but they are too heavy weight and for mobile applications and offer much functionality that would go unused (such as dynamic loading and unloading of plugins).  Dagger, which is designed for mobile application offers all the necessary dependency injection features and can be adopted to use across libraries to build composable plugins.
 
 ## Single-project Dagger 2 Application Structure
-![Diagram](docs/standard_dagger_2_model.png)
+![Diagram](doc/standard_dagger_2_model.png)
 
 Graph above shows a typical Object Graph structure in an application using Dagger 2.  It has the following features:
 - The MyApplicationComponent interface, which has the [@Component](http://google.github.io/dagger/api/2.0/dagger/Component.html) annotation, encapsulates the graph of objects that exist for the duration of the application.
@@ -18,7 +18,7 @@ Graph above shows a typical Object Graph structure in an application using Dagge
   - AccountActivityModule requires the AccountActivity reference when it is created.  This object, like MyApplication, is also created by the android framework and thus, it must be also supplied to the Dagger when the AccountActivityComponent sub-graph is created.
 
 ## Plugin Architected Application with Multiple Modules, using Dagger 2
-![Diagram](docs/plugin_dagger_2_model.png)
+![Diagram](doc/plugin_dagger_2_model.png)
 
 Dagger 2 was not explicitly designed to be implemented across multiple modules (sub-projects, or libraries).  In order to make Dagger 2 compatible with our requirement of splitting the application into modules, we have to make some restrictions on how we use it:
 Libraries cannot create the ApplicationScope graph.  
@@ -34,7 +34,7 @@ Many plugins need to perform some initialization when the application starts, su
 ## Service Relay
 An example of use case of the plugin paradigm: ServiceRelay is a uses an Android service which can be shared by multiple plugins:
 
-![Diagram](docs/service_relay.png)
+![Diagram](doc/service_relay.png)
 
 1. Plugins use ServiceRelay by contributing ServiceRelayDelegate implementations through [@Provides.Type.SET](http://google.github.io/dagger/api/2.0/dagger/Provides.Type.html#SET).
 2. Clients invoke the ServicerRelay service via an intent created using ServiceRelayIntentFactory, and a custom action ID.
