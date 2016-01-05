@@ -1,7 +1,13 @@
 # Plugin Architecture for Android
-By definition, plugin architecture is design pattern that allows the main functionality of an application to be extended and customized.  It's unlikely that there will be many mobile applications that have such a requirement.  Instead, we can use a plugin architecture throughout a mobile application, to enforce clean separation of functionality into modules which can then be re-used as building blocks for new applications without duplicating the boiler-plate glue code which ties all the module features together.  
+## Motivation
+- Break up the increasing complexity in Apps into managable chunks.
+- Enable parallel development on various app components.
+- Build encapsulated components that can be reused between apps.
+- Minimize boilerplate and repeated glue code including Android schema declarations.
 
-There are many plugin architecture frameworks in Java, such as Spring and OSGi,  but they are too heavy weight and for mobile applications and offer much functionality that would go unused (such as dynamic loading and unloading of plugins).  Dagger, which is designed for mobile application offers all the necessary dependency injection features and can be adopted to use across libraries to build composable plugins.
+The existing model for breaking an Android App into smaller components is to create Android services, and content providers, and access them using IPC.  Using IPC is inconvenient because it requries marshalling data thus restricting use of plain java objects, and creates possible security vulnerabilities.  
+
+A light-weight plugin architecture framework build on Dagger 2 allows an app to be broken up into an arbitrary number of libraries with well-defined APIs and dependencies.  Dependency Injection using Dagger does most of the hard work to ensure that dependencies are directed one way between plugins.  This project provides a way for Dagger 2 to be used accross library and app projects to eliminate the glue code that is typically needed in the application project in order to inject dependencies into libraries.  With better encapsulation, plugins can be build on other plugins to implement full application functionality with only a thin application project to pull them together.
 
 ## Single-project Dagger 2 Application Structure
 ![Diagram](doc/standard_dagger_2_model.png)
