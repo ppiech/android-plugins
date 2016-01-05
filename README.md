@@ -9,7 +9,7 @@ The existing model for breaking an Android App into smaller components is to cre
 
 A light-weight plugin architecture framework build on Dagger 2 allows an app to be broken up into an arbitrary number of libraries with well-defined APIs and dependencies.  Dependency Injection using Dagger does most of the hard work to ensure that dependencies are directed one way between plugins.  This project provides a way for Dagger 2 to be used accross library and app projects to eliminate the glue code that is typically needed in the application project in order to inject dependencies into libraries.  With better encapsulation, plugins can be build on other plugins to implement full application functionality with only a thin application project to pull them together.
 
-## Single-project Dagger 2 Application Structure
+## Typical Single-project Dagger 2 Application Structure
 ![Diagram](doc/standard_dagger_2_model.png)
 
 Graph above shows a typical Object Graph structure in an application using Dagger 2.  It has the following features:
