@@ -9,7 +9,26 @@ The existing model for breaking an Android App into smaller components is to cre
 
 A light-weight plugin architecture framework build on Dagger 2 allows an app to be broken up into an arbitrary number of libraries with well-defined APIs and dependencies.  Dependency Injection using Dagger does most of the hard work to ensure that dependencies are directed one way between plugins.  This project provides a way for Dagger 2 to be used accross library and app projects to eliminate the glue code that is typically needed in the application project in order to inject dependencies into libraries.  With better encapsulation, plugins can be build on other plugins to implement full application functionality with only a thin application project to pull them together.
 
-## Typical Single-project Dagger 2 Application Structure
+## From Dependency Injection to Plugins
+With dependency injection we pass control of resolving depdencies needed by components to a central framework.  The last step in the this progression introduces an interface: Y' which allows the injected dependency Y to be substituted with another implementation. 
+![Diagram](doc/dagger_injection.png)
+
+### Debug Configuration
+ The typical use case for this pattern is to allow test and debug configuration of the application to inject stub implementations of modules.
+![Diagram](doc/dagger_debug.png)
+
+### Plugins
+To build a plugin-architected application, we use the DI framework to decouple the interface and its implemetation so that a Plugin could be reused in different applications.
+![Diagram](doc/dagger_plugins.png)
+
+### Extensoin Points
+A more powerful use of DI is to have a plugin declare an interface and an injection point that multiple plugins contribute to.  This extension interface can be used to delegate control from the base plugin to other plugins that build on top of its functioanlity.  A typical use case is for this mechanism is to off-load listener management to the framework with the added benefit that all the injected listeners are guaranteed to be registered at creation time. 
+![Diagram](doc/dagger_set.png)
+
+## Using Dagger 2 in Library Projects
+Dagger 2 was not explicitly designed to be implemented across multiple modules (sub-projects, or libraries).  The example below shows how to force Dagger to fit our use case.
+
+### (Example) Single-project Dagger 2 Application Structure 
 ![Diagram](doc/standard_dagger_2_model.png)
 
 Graph above shows a typical Object Graph structure in an application using Dagger 2.  It has the following features:
@@ -23,10 +42,10 @@ Graph above shows a typical Object Graph structure in an application using Dagge
   - AccountActivityModule and AccountActivityPresenter modules share the ActivityScope, which binds the life-cycle of the injected types to the activity.
   - AccountActivityModule requires the AccountActivity reference when it is created.  This object, like MyApplication, is also created by the android framework and thus, it must be also supplied to the Dagger when the AccountActivityComponent sub-graph is created.
 
-## Plugin Architected Application with Multiple Modules, using Dagger 2
+### Plugin Architected Application with Multiple Modules, using Dagger 2
 ![Diagram](doc/plugin_dagger_2_model.png)
 
-Dagger 2 was not explicitly designed to be implemented across multiple modules (sub-projects, or libraries).  In order to make Dagger 2 compatible with our requirement of splitting the application into modules, we have to make some restrictions on how we use it:
+In order to make Dagger 2 compatible with our requirement of splitting the application into modules, we have to make some restrictions on how we use it:
 Libraries cannot create the ApplicationScope graph.  
 - Only the top-level android application project, which implements the [Application](http://developer.android.com/reference/android/app/Application.html) object can create this graph.
 - Libraries must use a interfaces to access objects that are held by the ApplicationScope object graph.  These interface can be declared by the libraries: ApplicationComponet, PushComponent, etc., and can depend on other Component interfaces.
