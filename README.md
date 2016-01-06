@@ -28,7 +28,7 @@ A more powerful use of DI is to have a plugin declare an interface and an inject
 ## Using Dagger 2 in Library Projects
 Dagger 2 was not explicitly designed to be implemented across multiple modules (sub-projects, or libraries).  The example below shows how to force Dagger to fit our use case.
 
-### (Example) Single-project Dagger 2 Application Structure 
+### (Example) Single-Project Dagger 2 Application 
 ![Diagram](doc/standard_dagger_2_model.png)
 
 Graph above shows a typical Object Graph structure in an application using Dagger 2.  It has the following features:
@@ -42,7 +42,7 @@ Graph above shows a typical Object Graph structure in an application using Dagge
   - AccountActivityModule and AccountActivityPresenter modules share the ActivityScope, which binds the life-cycle of the injected types to the activity.
   - AccountActivityModule requires the AccountActivity reference when it is created.  This object, like MyApplication, is also created by the android framework and thus, it must be also supplied to the Dagger when the AccountActivityComponent sub-graph is created.
 
-### Plugin Architected Application with Multiple Modules, using Dagger 2
+### (Example) Multi-Project Dagger 2 Application
 ![Diagram](doc/plugin_dagger_2_model.png)
 
 In order to make Dagger 2 compatible with our requirement of splitting the application into modules, we have to make some restrictions on how we use it:
