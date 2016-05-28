@@ -4,7 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.lookout.plugin.android.Provider;
+import com.lookout.plugin.android.Components;
 import com.lookout.plugin.servicerelay.ServiceRelayComponent;
 import com.lookout.plugin.servicerelay.ServiceRelayDelegate;
 
@@ -18,7 +18,7 @@ public class ServiceRelayService extends Service implements ServiceRelayDelegate
     @Override
     public void onCreate() {
         super.onCreate();
-        new Provider<ServiceRelayComponent>().fromContext(getApplicationContext()).inject(this);
+        Components.from(getApplicationContext(), ServiceRelayComponent.class).inject(this);
         mServiceShare.onServiceCreate(this);
     }
 

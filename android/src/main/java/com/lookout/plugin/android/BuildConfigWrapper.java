@@ -1,13 +1,10 @@
 package com.lookout.plugin.android;
 
 public class BuildConfigWrapper {
-
     private final boolean mDebug;
     private final String mApplicationId;
-
-    public final int mVersionCode;
-    public final String mVersionName;
-
+    private final int mVersionCode;
+    private final String mVersionName;
 
     public BuildConfigWrapper(boolean debug, String applicationId, int versionCode, String versionName) {
         mDebug = debug;

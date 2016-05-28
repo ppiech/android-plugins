@@ -2,14 +2,6 @@ package com.lookout.plugin.servicerelay;
 
 import android.content.Intent;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import javax.inject.Qualifier;
-
-import dagger.Provides;
-
 /**
  * Light-weight replacement for an Android service.  ServiceRelay delegates implement the
  * <code>ServiceRelayDelegate</code> interface, which mirrors Android's {@link android.app.Service}

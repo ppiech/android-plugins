@@ -1,8 +1,14 @@
 package com.lookout.plugin.android;
 
 import android.app.Application;
+import android.app.KeyguardManager;
+import android.os.Vibrator;
 
-import com.lookout.plugin.PluginRegistry;
+import com.lookout.plugin.ApplicationOnCreateListenerDispatcher;
+import com.lookout.plugin.android.broadcasts.BroadcastRelay;
+import com.lookout.plugin.android.concurrency.Background;
+import com.lookout.plugin.android.concurrency.MainLooper;
+import rx.Scheduler;
 
 /**
  * Base interface for Dagger components in the ApplicationScope.
@@ -41,5 +47,15 @@ import com.lookout.plugin.PluginRegistry;
 //@Component( modules = {AndroidPluginModule.class} )
 public interface AndroidComponent {
     Application application();
-    PluginRegistry pluginRegistry();
+    ApplicationOnCreateListenerDispatcher applicationOnCreateListenerDispatcher();
+
+    @MainLooper Scheduler mainLooper();
+    @Background Scheduler backgroundLooper();
+    BuildWrapper buildWrapper();
+    BuildConfigWrapper buildConfigWrapper();
+
+    KeyguardManager keyguardManagerService();
+    Vibrator vibratorService();
+
+    BroadcastRelay broadcastRelay();
 }

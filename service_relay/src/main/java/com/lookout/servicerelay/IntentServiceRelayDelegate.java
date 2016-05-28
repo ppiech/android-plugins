@@ -37,7 +37,7 @@ public abstract class IntentServiceRelayDelegate implements ServiceRelayDelegate
     /**
      * Subclasses must override this method to implement service functionality in the background
      * thread.
-     * @param intent Intent that started the service.
+     * @param intent Intent that started the service.  Will not be null.
      */
     protected abstract void onServiceHandleIntent(Intent intent);
 
@@ -60,7 +60,7 @@ public abstract class IntentServiceRelayDelegate implements ServiceRelayDelegate
      * NOTE: May override to return Service.REDELIER_INTENT
      */
     @Override
-    public int onServiceStartCommand(final Intent intent, int flags, final int startId) {
+    public int onServiceStartCommand(final Intent intent, int flags, int startId) {
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {

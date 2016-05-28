@@ -1,6 +1,5 @@
 package com.lookout.plugin.servicerelay;
 
-import com.lookout.plugin.Plugin;
 import com.lookout.plugin.android.AndroidComponent;
 import com.lookout.plugin.servicerelay.internal.ServiceRelayService;
 

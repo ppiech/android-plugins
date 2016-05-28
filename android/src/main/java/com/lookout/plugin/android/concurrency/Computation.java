@@ -10,10 +10,9 @@ import javax.inject.Qualifier;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Qualifier for {@link rx.schedulers.Schedulers#io()} scheduler.
- */
+ * Qualifier for {@link Schedulers#computation()} scheduler. */
 @Qualifier
 @Documented
 @Retention(RUNTIME)
-public @interface Background {
+public @interface Computation {
 }

@@ -8,7 +8,7 @@ import javax.inject.Qualifier;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Qualifier for executors indicating that the given executor uses a single thread.
+ * Qualifier for executor that uses a single thread for all tasks (like IntentService).
  */
 @Qualifier
 @Documented

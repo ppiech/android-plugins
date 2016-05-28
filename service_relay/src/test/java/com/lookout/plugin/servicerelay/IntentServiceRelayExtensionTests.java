@@ -27,7 +27,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 16)
+@Config(constants = BuildConfig.class, emulateSdk = 16)
 public class IntentServiceRelayExtensionTests {
 
     private static Intent INTENT = new Intent("action");

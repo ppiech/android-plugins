@@ -1,5 +1,6 @@
 package com.lookout.plugin.servicerelay.internal;
 
+import android.app.Service;
 import android.content.Intent;
 
 import com.lookout.plugin.android.application.ApplicationScope;
@@ -60,7 +61,8 @@ public class ServiceRelay {
     void onServiceCreate(ServiceRelayDelegate.Control service) {
         synchronized (this) {
             if (mService != null) {
-                throw new IllegalArgumentException("Service already created: \nmService = " + mService + "\nservice = " + service);
+                throw new IllegalArgumentException("Service already created: \nmService = " + mService + "\nservice =" +
+                    " " + service);
             }
             mService = service;
         }
@@ -76,7 +78,8 @@ public class ServiceRelay {
         synchronized (this) {
             // Modify mService in synchronized block to force other threads to see the updated variable state.
             if (mService != service) {
-                throw new IllegalArgumentException("Service instance doesn't match in onDestroy() \nmService = " + mService + "\nservice = " + service);
+                throw new IllegalArgumentException("Service instance doesn't match in onDestroy() \nmService = " +
+                    mService + "\nservice = " + service);
             }
             mService = null;
 
@@ -90,37 +93,56 @@ public class ServiceRelay {
     }
 
     int onServiceStartCommand(Intent intent, int flags, int startId) {
-        String action = intent.getAction();
-        ServiceRelayDelegate listener = mActions.get(action);
+        ServiceRelayDelegate listener = null;
+        if (intent != null) {
+            String action = intent.getAction();
+            listener = mActions.get(action);
 
+            synchronized (this) {
+                if (listener == null) {
+                    mLogger.error("Listener not found for service intent action:\n action = " +
+                            action + "\n mActions = " + mActions.keySet());
+
+                } else {
+                    mLastStartId = startId;
+                    mRunningIds.put(startId, action);
+                }
+            }
+        }
+        if (listener == null) {
+            stopSelfOnInvalidStart(startId);
+            return Service.START_NOT_STICKY;
+        } else {
+            return listener.onServiceStartCommand(intent, flags, startId);
+        }
+    }
+
+    private void stopSelfOnInvalidStart(int startId) {
         synchronized (this) {
             mLastStartId = startId;
-            if (listener == null) {
-                throw new IllegalArgumentException("Listener not found for service intent action:\n action = " + action + "\n mActions = " + mActions.keySet());
+            if (mRunningIds.isEmpty()) {
+                mService.stopSelfResult(startId);
             }
-            mRunningIds.put(startId, action);
         }
-
-        return listener.onServiceStartCommand(intent, flags, startId);
     }
 
 
     private class ControlImpl implements ServiceRelayDelegate.Control {
         @Override
         public boolean stopSelfResult(int startId) {
-            synchronized (this) {
+            synchronized (ServiceRelay.this) {
                 if (mService == null) {
                     mLogger.error("service_relay", "Stop requested but service already destroyed:\n startId = "
-                            + startId + ",\n action = " + mRunningIds.get(startId));
+                        + startId + ",\n action = " + mRunningIds.get(startId));
                 }
                 if (mRunningIds.remove(startId) == null) {
-                    throw new IllegalStateException("Service stop requested for start ID that doesn't match a running action: " + startId);
+                    throw new IllegalStateException("Service stop requested for start ID that doesn't match a running" +
+                        " action: " + startId);
                 }
                 if (mRunningIds.isEmpty() && mService != null) {
-                    mLogger.info("service_relay", "stopSelfResult() stopping service, no outstanding running startIds:");
+                    mLogger.info("service_relay", "stopSelfResult() stopping service, no outstanding running " +
+                        "startIds:");
                     return mService.stopSelfResult(mLastStartId);
-                } else {
-                    mLogger.info("service_relay", "stopSelfResult() not stopping service, outstanding running startIds:" + mRunningIds);
                 }
             }
             return false;

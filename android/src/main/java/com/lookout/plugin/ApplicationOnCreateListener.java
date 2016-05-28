@@ -3,18 +3,17 @@ package com.lookout.plugin;
 import android.app.Application;
 
 /**
- * Interface to be implemented in modules that contribute to a plugin-based application.
+ * Interface to be implemented in modules that need to perform initialization during application startup.
  *
- * @see PluginRegistry
+ * @see ApplicationOnCreateListenerDispatcher
  */
-public class Plugin {
+public interface ApplicationOnCreateListener {
 
     /**
-     * Called by the PluginRegistry upon initialization.  Allows modules to inject dependencies and
+     * Called by the application upon startup.  Allows modules to inject dependencies and
      * schedule initialization tasks to be performed in background.<br>
      * Note: this method is called from {@link Application#onCreate()} on the main looper so any
      * processing performed in its implementation will delay the application's launch.
      */
-    public void onApplicationCreate() {
-    }
+    public void applicationOnCreate();
 }

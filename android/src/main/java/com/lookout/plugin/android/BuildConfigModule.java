@@ -13,7 +13,7 @@ import dagger.Provides;
 public class BuildConfigModule {
     private BuildConfigWrapper mBuildConfigWrapper;
 
-    public BuildConfigModule(BuildConfigWrapper buildConfigWrapper){
+    public BuildConfigModule(BuildConfigWrapper buildConfigWrapper) {
         mBuildConfigWrapper = buildConfigWrapper;
     }
 
