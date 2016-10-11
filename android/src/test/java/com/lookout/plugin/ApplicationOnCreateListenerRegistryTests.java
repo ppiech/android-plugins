@@ -15,8 +15,6 @@ import java.util.HashSet;
 
 import static org.mockito.Mockito.verify;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = com.lookout.plugin.android.BuildConfig.class, emulateSdk = 16)
 public class ApplicationOnCreateListenerRegistryTests {
 
     @Mock

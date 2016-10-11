@@ -1,0 +1,83 @@
+ext.ver = [
+        minSdk    : 15,
+        compileSdk: 23,
+        // BUILD_TOOLS - is a property from gradle.properties file
+        buildTools: (project.hasProperty('BUILD_TOOLS')) ? BUILD_TOOLS : '24.0.3',
+        targetSdk : 23
+]
+
+class Libraries extends Expando {}
+ext.libraries = new Libraries()
+ext.libraries.commons_lang = 'commons-lang:commons-lang:2.5'
+ext.libraries.commons_collections4 = 'org.apache.commons:commons-collections4:4.+'
+ext.libraries.commons_validator = 'commons-validator:commons-validator:1.4.0'
+ext.libraries.dnsjava = dependencies.create('dnsjava:dnsjava:2.1.1') {
+    exclude group: 'junit', module: 'junit'
+}
+ext.libraries.httpcomponents_httpmime = 'org.apache.httpcomponents:httpmime:4.2.3'
+
+ext.libraries.slf4j = 'org.slf4j:slf4j-api:1.7.7'
+ext.libraries.mockito = 'org.mockito:mockito-core:1.9.5'
+ext.libraries.rxjava = 'io.reactivex:rxjava:1.1.+'
+ext.libraries.rxandroid = 'io.reactivex:rxandroid:1.1.+'
+ext.libraries.rxbinding = 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+ext.libraries.rxjava_proguard_rules = 'com.artemzin.rxjava:proguard-rules:1.1.+'
+
+// android support
+ext.libraries.support_v4 = 'com.android.support:support-v4:23.2.1'
+ext.libraries.support_annotations = 'com.android.support:support-annotations:23.2.1'
+ext.libraries.support_design = 'com.android.support:design:23.2.1'
+ext.libraries.support_percent = 'com.android.support:percent:23.2.1'
+ext.libraries.support_appcompat = 'com.android.support:appcompat-v7:23.2.1'
+ext.libraries.support_recyclerview = 'com.android.support:recyclerview-v7:23.2.1'
+ext.libraries.support_cardview = 'com.android.support:cardview-v7:23.2.1'
+ext.libraries.support_preference_v14 = 'com.android.support:preference-v14:23.2.1'
+ext.libraries.support_multidex = 'com.android.support:multidex:1.0.0'
+ext.libraries.support_palette = 'com.android.support:palette-v7:23.2.1'
+
+ext.libraries.viewpager_indicator = 'fr.avianey.com.viewpagerindicator:library:2.4.1@aar'
+
+// Utils
+// Dagger
+ext.libraries.dagger = 'com.google.dagger:dagger:2.7'
+
+ext.libraries.daggerApt = "com.google.dagger:dagger-compiler:2.7"
+ext.libraries.annotations = 'javax.annotation:jsr250-api:1.0'
+
+ext.libraries.autoValue = 'com.google.auto.value:auto-value:1.2'
+ext.libraries.autoParcelApt = 'com.ryanharter.auto.value:auto-value-parcel:0.2.2'
+
+ext.libraries.picasso = 'com.squareup.picasso:picasso:2.5.2'
+ext.libraries.picasso_transformations = 'jp.wasabeef:picasso-transformations:2.1.0'
+
+ext.libraries.playgcm = dependencies.create('com.google.android.gms:play-services-gcm:8.1.+') {
+    exclude group: 'com.android.support', module: 'support-v4'
+    exclude group: 'com.android.support', module: 'support-annotations'
+}
+ext.libraries.play_services_base = dependencies.create('com.google.android.gms:play-services-base:8.1.+') {
+    exclude group: 'com.android.support', module: 'support-annotations'
+}
+ext.libraries.play_services_location = dependencies.create('com.google.android.gms:play-services-location:8.1.+') {
+    exclude group: 'com.android.support', module: 'support-annotations'
+}
+ext.libraries.play_services_maps = 'com.google.android.gms:play-services-maps:8.1.+'
+
+// Testing
+ext.libraries.junit = 'junit:junit:4.12'
+ext.libraries.robolectric3 = dependencies.create('org.robolectric:robolectric:3.1.1') {
+    exclude group: 'commons-logging', module: 'commons-logging'
+    exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+}
+ext.libraries.jsonassert = dependencies.create('org.skyscreamer:jsonassert:1.2.0') {
+    transitive = false
+}
+
+// UI utils
+ext.libraries.butterknife = dependencies.create('com.jakewharton:butterknife:8.4.0') {
+    exclude group: 'com.android.support', module: 'support-annotations'
+}
+ext.libraries.butterknifeApt = dependencies.create('com.jakewharton:butterknife-compiler:8.4.0') {
+    exclude group: 'com.android.support', module: 'support-annotations'
+}
+
+

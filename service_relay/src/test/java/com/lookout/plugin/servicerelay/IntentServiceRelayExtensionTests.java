@@ -7,14 +7,11 @@ import com.lookout.servicerelay.IntentServiceRelayDelegate;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -26,8 +23,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 16)
 public class IntentServiceRelayExtensionTests {
 
     private static Intent INTENT = new Intent("action");

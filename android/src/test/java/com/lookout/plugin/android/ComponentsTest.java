@@ -15,8 +15,6 @@ import org.robolectric.annotation.Config;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 16)
 public class ComponentsTest {
 
     @Mock

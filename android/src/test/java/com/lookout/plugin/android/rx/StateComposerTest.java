@@ -17,8 +17,6 @@ import rx.observers.TestSubscriber;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.PublishSubject;
 
-@RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 16)
 public class StateComposerTest {
 
     @Test

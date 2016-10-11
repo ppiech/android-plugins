@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = com.lookout.plugin.servicerelay.BuildConfig.class, emulateSdk = 16)
+@Config(constants = com.lookout.plugin.servicerelay.BuildConfig.class, sdk = 16)
 public class ServiceRelayTests {
 
     private static String ACTION_DELEGATE1_ACTION1 = "delegate1 action1";

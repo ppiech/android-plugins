@@ -6,8 +6,6 @@ import android.content.Intent;
 import com.lookout.plugin.android.application.ApplicationScope;
 import com.lookout.plugin.servicerelay.ServiceRelayDelegate;
 
-import net.jcip.annotations.GuardedBy;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +23,6 @@ public class ServiceRelay {
     private final ServiceRelayDelegate.Control mControl = new ControlImpl();
 
     // Re-use the control interface to represent the underlying service to allow mocking in tests.
-    @GuardedBy("this")
     private ServiceRelayDelegate.Control mService;
 
     // Confined to main looper
@@ -34,10 +31,8 @@ public class ServiceRelay {
     // Confined to main looper
     private Map<String, ServiceRelayDelegate> mActions = null;
 
-    @GuardedBy("this")
     private Map<Integer, String> mRunningIds = new HashMap<>();
 
-    @GuardedBy("this")
     private int mLastStartId = -1;
 
     @Inject

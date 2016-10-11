@@ -1,0 +1,100 @@
+
+apply plugin: 'maven'
+apply plugin: 'checkstyle'
+apply plugin: 'jacoco'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+
+apply from: '../dependencies.gradle'
+
+android {
+    compileSdkVersion ver.compileSdk
+    buildToolsVersion ver.buildTools
+
+    defaultConfig {
+        minSdkVersion ver.minSdk
+        targetSdkVersion ver.targetSdk
+        versionCode 
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'NOTICE.txt'
+        exclude 'NOTICE'
+        exclude 'LICENSE.txt'
+        exclude 'LICENSE'
+    }
+
+    lintOptions {
+        ignoreWarnings false
+        abortOnError true
+        disable 'InvalidPackage'
+        // Junit has many classes that are not in Android, ignore these errors
+
+        lintConfig file("tools/lint/lint-config.xml")
+
+        xmlReport true
+        xmlOutput file("$project.buildDir/reports/lint/lint-results.xml")
+
+        htmlReport true
+        htmlOutput file("$project.buildDir/reports/lint/lint-report.html")
+    }
+
+    dexOptions {
+         preDexLibraries = !hasProperty('DONT_PRE_DEX_LIBRARIES')
+    }
+}
+
+dependencies {
+    compile libraries.dagger
+    apt libraries.daggerApt
+
+    provided libraries.annotations
+    provided libraries.autoValue
+
+    compile libraries.butterknife
+    apt libraries.butterknifeApt
+
+    compile libraries.support_annotations
+
+    compile libraries.rxjava
+    compile libraries.rxandroid
+
+    testCompile libraries.junit
+    testCompile libraries.robolectric3
+    testCompile libraries.mockito
+    testCompile libraries.jsonassert
+}
+
+// http://stackoverflow.com/questions/19307341/android-library-gradle-release-jar
+android.libraryVariants.all { variant ->
+    String name = variant.buildType.name
+
+    if (name.equalsIgnoreCase('debug')) {
+        println 'skipping debug build'
+        return;
+    }
+
+    task androidSourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    artifacts.add('archives', androidSourcesJar)
+}

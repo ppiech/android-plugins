@@ -6,8 +6,6 @@ import android.content.Intent;
 import com.lookout.plugin.android.concurrency.SingleThread;
 import com.lookout.plugin.servicerelay.ServiceRelayDelegate;
 
-import net.jcip.annotations.GuardedBy;
-
 import java.util.concurrent.Executor;
 
 /**
@@ -21,7 +19,6 @@ public abstract class IntentServiceRelayDelegate implements ServiceRelayDelegate
 
     private final Executor mExecutor;
 
-    @GuardedBy("this")
     private Control mControl;
 
     /**
