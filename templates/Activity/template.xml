@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<template
+    format="2"
+    revision="2"
+    name="Activity"
+    minApi="7"
+    minBuildApi="14"
+    description="Creates an activity Screen, Presenter, Module and Subcomponent">
+
+    <category value="android-plugins" />
+    <formfactor value="Mobile" />
+
+    <parameter
+        id="activityClass"
+        name="Activity Name"
+        type="string"
+        constraints="class|nonempty"
+        suggest="MyActivity"
+        default="MyActivity"
+        help="The name of the activity class" />
+
+    <parameter
+        id="packageName"
+        name="Package name"
+        type="string"
+        constraints="package"
+        default="com.mycompany.myapp" />
+
+    <execute file="recipe.xml.ftl" />
+
+</template>  
